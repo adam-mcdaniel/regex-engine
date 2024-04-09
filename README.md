@@ -44,6 +44,26 @@ int main() {
 }
 ```
 
+## Regex Syntax
+
+The regex engine supports the following syntax:
+
+| Syntax | Description |
+|--------|-------------|
+| `*` | Zero or more of the preceding expression |
+| `+` | One or more of the preceding expression |
+| `?` | Zero or one of the preceding expression |
+| `\|` | Alternation |
+| `()` | Grouping |
+| `a`, `b`, `c`, ... | Any single character |
+
+<!-- - `*` - Zero or more of the preceding expression
+- `+` - One or more of the preceding expression
+- `?` - Zero or one of the preceding expression
+- `|` - Alternation
+- `()` - Grouping
+- `a`, `b`, `c`, ... - Any character -->
+
 ## Building
 
 To build your program with the regex engine, simply add it to your include path and link against the C++ standard library.
