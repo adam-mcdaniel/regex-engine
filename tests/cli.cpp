@@ -2,7 +2,7 @@
 
 
 int main(int argc, char *argv[]) {
-    std::string pattern = "ab.*c|+";
+    std::string pattern = "((ab)*|c)+";
     if (argc > 1) {
         pattern = argv[1];
         std::cout << "Pattern: " << pattern << std::endl;
