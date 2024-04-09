@@ -184,30 +184,6 @@ public:
     }
 
     ~State() {
-        /*
-        std::cout << "Deleting state " << this->stateid << std::endl;
-        if (!this->is_root) {
-            return;
-        }
-        set_root(true);
-
-        std::unordered_set<State *> states = this->collect_states();
-        // for (int i = 0; i < states.size(); i++) {
-        //     if (states[i] != nullptr && states[i] != this) {
-        //         states[i]->set_root(false);
-        //         delete states[i];
-        //     }
-        // }
-        
-        for (std::unordered_set<State *>::iterator it = states.begin(); it != states.end(); it++) {
-            if (*it != nullptr && *it != this) {
-                (*it)->set_root(false);
-                delete *it;
-            }
-        }
-        return;
-        */
-
         static std::unordered_set<int> visited;
         if (visited.find(this->id()) != visited.end()) {
             return;
@@ -294,7 +270,6 @@ public:
         if (!this->has_state(state)) {
             this->states.insert(state);
         }
-        // this->states.push_back(state);
     }
 
     void addstate(std::vector<State *> states) {
@@ -304,30 +279,15 @@ public:
     }
 
     void addstate(StateList *stateList) {
-        // for (int i = 0; i < stateList->states.size(); i++) {
-        //     this->addstate(stateList->states[i]);
-        // }
         this->states.insert(stateList->states.begin(), stateList->states.end());
-
-        // this->out.insert(this->out.end(), stateList.out.begin(), stateList.out.end());
     }
 
     bool has_state(State *state) {
-        // for (int i = 0; i < this->states.size(); i++) {
-        //     if (this->states[i] == state) {
-        //         debug << "State " << state->id() << " is already in the list" << std::endl;
-        //         return true;
-        //     }
-        // }
-
         return this->states.find(state) != this->states.end();
     }
 
     void patch(State *state) {
         debug << "Patching state " << state->id() << " with " << this->states.size() << " states" << std::endl;
-        // for (int i = 0; i < this->states.size(); i++) {
-        //     this->states[i]->patch(state);
-        // }
         for (std::set<State *>::iterator it = this->states.begin(); it != this->states.end(); it++) {
             (*it)->patch(state);
         }
@@ -335,9 +295,6 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const StateList &stateList) {
         os << "[ ";
-        // for (int i = 0; i < stateList.states.size(); i++) {
-        //     os << stateList.states[i]->id() << " ";
-        // }
         for (std::set<State *>::iterator it = stateList.states.begin(); it != stateList.states.end(); it++) {
             os << (*it)->id() << " ";
         }
@@ -378,7 +335,6 @@ State *post2nfa(std::string postfix) {
                 if (stack.size() < 2) {
                     continue;
                 }
-
                 e2 = stack.back();
                 stack.pop_back();
                 e1 = stack.back();
@@ -494,9 +450,6 @@ std::string infix2postfix(std::string postfix) {
         if (!is_operator(postfix[i]) && i > 0 && !is_operator(postfix[i-1])) {
             postfix.insert(i, ".");
         }
-        // if (i >= 0 && i < postfix.size() - 1 && postfix[i] != '(' && postfix[i] != ')' && postfix[i + 1] != '(' && postfix[i + 1] != ')' && precedence.find(postfix[i]) == precedence.end() && precedence.find(postfix[i + 1]) == precedence.end()) {
-        //     postfix.insert(i + 1, ".");
-        // }
     }
     debug << "Infix: " << postfix << std::endl;
 
@@ -555,9 +508,7 @@ std::string infix2postfix(std::string postfix) {
 }
 
 #ifdef CACHING
-
 struct Hit {
-    // std::unordered_map< std::vector<State *>, std::vector<State*>, VectorPtrHash, VectorPtrEqual > stored;
     std::map< std::vector<State *>, std::vector<State*> > stored;
     std::vector<State *> clist, nlist;
     int hits, misses;
@@ -588,9 +539,6 @@ struct Hit {
                 return true;
             }
             misses++;
-            // if (!should_update()) {
-            //     ignore = true;
-            // }
         }
         return hit;
     }
@@ -606,7 +554,6 @@ struct Hit {
 
     bool is_hit(const std::vector<State*> &clist) const {
         return this->clist == clist || stored.find(clist) != stored.end();
-        // return this->clist == clist;
     }
 
     bool should_update() const {
@@ -633,8 +580,6 @@ bool match(State *start, std::string s) {
             if (states[s[i]].try_hit(clist)) {
                 continue;
             }
-        // } else if (found_entry) {
-        //     std::cout << "Ignoring " << s[i] << std::endl;
         }
         last_clist = clist;
         #endif
@@ -671,8 +616,6 @@ bool match(State *start, std::string s) {
             //     states.erase(states.begin());
             // }
             states[s[i]].update(last_clist, nlist);
-        // } else {
-        //     std::cout << "Ignoring " << s[i] << std::endl;
         }
         #endif
         
@@ -722,11 +665,3 @@ private:
     std::string pattern;
     State *start;
 };
-
-// bool match(std::string pattern, std::string content) {
-//     pattern = infix2postfix(pattern);
-//     State *start = post2nfa(pattern);
-//     bool result = match(start, content);
-//     delete start;
-//     return result;
-// }
