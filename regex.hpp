@@ -346,6 +346,10 @@ State *post2nfa(std::string postfix) {
                 allfrags.push_back(e);
                 break;
             case '|':
+                if (stack.size() < 2) {
+                    continue;
+                }
+
                 e2 = stack.back();
                 stack.pop_back();
                 e1 = stack.back();
@@ -360,6 +364,10 @@ State *post2nfa(std::string postfix) {
                 allfrags.push_back(e);
                 break;
             case '*':
+                if (stack.empty()) {
+                    continue;
+                }
+
                 e1 = stack.back();
                 stack.pop_back();
                 state = new State();
@@ -371,6 +379,10 @@ State *post2nfa(std::string postfix) {
                 allfrags.push_back(e);
                 break;
             case '+':
+                if (stack.empty()) {
+                    continue;
+                }
+
                 e1 = stack.back();
                 stack.pop_back();
                 state = new State();
@@ -382,6 +394,10 @@ State *post2nfa(std::string postfix) {
                 allfrags.push_back(e);
                 break;
             case '?':
+                if (stack.empty()) {
+                    continue;
+                }
+                
                 e1 = stack.back();
                 stack.pop_back();
                 state = new State();
@@ -400,6 +416,11 @@ State *post2nfa(std::string postfix) {
                 allfrags.push_back(e);
                 break;
         }
+    }
+
+    if (stack.empty()) {
+        std::cerr << "Invalid regex" << std::endl;
+        exit(1);
     }
 
     e = stack.back();
@@ -639,6 +660,12 @@ bool match(State *start, std::string s) {
 class Regex {
 public:
     Regex(std::string pattern) {
+        // Is pattern empty?
+        if (pattern.empty()) {
+            std::cerr << "Pattern cannot be empty" << std::endl;
+            exit(1);
+        }
+
         this->pattern = pattern;
         this->start = post2nfa(infix2postfix(pattern));
     }

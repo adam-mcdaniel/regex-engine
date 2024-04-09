@@ -72,6 +72,40 @@ To build your program with the regex engine, simply add it to your include path 
 g++ -I path/to/regex-engine main.cpp -o main
 ```
 
+### CMake
+
+To build with CMake, you can use a `CMakeLists.txt` file like the following:
+
+```cmake
+cmake_minimum_required(VERSION 3.0)
+
+# Create a new project
+project(HelloWorld)
+
+# Add an executable
+add_executable(HelloWorld main.cpp)
+
+include_directories(path/to/regex-engine)
+```
+
+Alternatively, you can use `FetchContent` to download the regex engine repository and include it in your project.
+
+```cmake
+# Import the library from the git repo
+include(FetchContent)
+
+FetchContent_Declare(
+  regex-engine
+  GIT_REPOSITORY https://github.com/adam-mcdaniel/regex-engine
+  GIT_TAG        main
+)
+
+FetchContent_MakeAvailable(regex-engine)
+
+# Include the header only library
+include_directories(${regex-engine_SOURCE_DIR})
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

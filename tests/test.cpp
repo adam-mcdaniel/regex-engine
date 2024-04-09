@@ -7,8 +7,7 @@ int main() {
     #endif
 
     const int trials = 5;
-    /*
-    for (int n=1; n<=30; n++) {
+    for (int n=1; n<=10; n++) {
         std::cout << "Pattern length: " << n << std::endl;
         std::string pattern;
         for (int i=0; i<n; i++) {
@@ -43,14 +42,13 @@ int main() {
         std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
         std::cout << "Average Time: " << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() / trials << "us" << std::endl;
     }
-    */
 
     std::cout << "Non-pathological tests begin" << std::endl;
 
     // Now do the same, but with overlapping patterns like (a|aa)*
     std::string pattern = "(a|b|c|d)*";
     Regex r(pattern);
-    for (int n=10; n<=100000; n*=2) {
+    for (int n=10; n<=1000; n*=2) {
         std::cout << "Content length: " << n << std::endl;
         std::string content = "";
 
