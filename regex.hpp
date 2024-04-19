@@ -3,6 +3,8 @@
  * Date: April 6th 2024
  * Purpose: This program implements a regular expression engine using the Thompson NFA construction algorithm.
  */
+#ifndef REGEX_HPP
+#define REGEX_HPP
 
 #include <vector>
 #include <deque>
@@ -685,6 +687,17 @@ public:
         debug << "Deleted regex" << std::endl;
     }
 
+    // Copy assignment operator
+    Regex &operator=(const Regex &other) {
+        if (this == &other) {
+            return *this;
+        }
+
+        this->pattern = other.pattern;
+        this->start = post2nfa(infix2postfix(other.pattern));
+        return *this;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Regex &regex) {
         return os << *regex.start;
     }
@@ -692,3 +705,5 @@ private:
     std::string pattern;
     State *start;
 };
+
+#endif
